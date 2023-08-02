@@ -30,12 +30,18 @@ module.exports = function toReadable(number) {
         7: "seventy",
         8: "eighty",
         9: "ninety",
-        10: "hundred",
     };
+    if (number == 0) {
+        return "zero";
+    }
     if (number < 20) {
         return Numbers[num];
     } else if (number >= 20 && number < 100) {
-        return TensOfNumbers[num[0]] + " " + Numbers[num[1]];
+        if (+num.slice(-1) == 0) {
+            return TensOfNumbers[num[0]];
+        } else {
+            return TensOfNumbers[num[0]] + " " + Numbers[num[1]];
+        }
     } else if (number >= 100 && number < 1000) {
         if (+num.slice(-2) < 1) {
             return Numbers[num[0]] + " " + "hundred";
@@ -48,16 +54,25 @@ module.exports = function toReadable(number) {
                 Numbers[String(+num.slice(-2))]
             );
         } else if (+num.slice(-2) >= 20) {
-            return (
-                Numbers[num[0]] +
-                " " +
-                "hundred" +
-                " " +
-                TensOfNumbers[String(+num.slice(-2, -1))] +
-                " " +
-                Numbers[String(+num.slice(-1))]
-            );
+            if (+num.slice(-1) == 0) {
+                return (
+                    Numbers[num[0]] +
+                    " " +
+                    "hundred" +
+                    " " +
+                    TensOfNumbers[String(+num.slice(-2, -1))]
+                );
+            } else {
+                return (
+                    Numbers[num[0]] +
+                    " " +
+                    "hundred" +
+                    " " +
+                    TensOfNumbers[String(+num.slice(-2, -1))] +
+                    " " +
+                    Numbers[String(+num.slice(-1))]
+                );
+            }
         }
     }
 };
-console.log(toReadable(200));
